@@ -659,7 +659,7 @@
             .hero .greeting { font-size: 24px; }
             .countdown-number { font-size: 44px; }
             .gallery-item { width: 160px; height: 220px; }
-            .ai-chat-window { width: calc(100% - 32px); right: 16px; }
+            .ai-chat-window { width: calc(100% - 32px); right: 16px; bottom: 155px; z-index: 101; }
         }
     </style>
 </head>
@@ -1153,7 +1153,7 @@
         const aiChatInput = $('aiChatInput'), aiChatSend = $('aiChatSend');
         let chatHistory = [];
 
-        aiFab.addEventListener('click', () => { aiChatWindow.classList.add('show'); aiChatInput.focus(); });
+        aiFab.addEventListener('click', () => { if (aiChatWindow.classList.contains('show')) { aiChatWindow.classList.remove('show'); } else { aiChatWindow.classList.add('show'); aiChatInput.focus(); } });
         aiChatClose.addEventListener('click', () => { aiChatWindow.classList.remove('show'); });
 
         function appendMessage(role, text, isHtml = false) {
