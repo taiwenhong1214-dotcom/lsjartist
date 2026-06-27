@@ -468,14 +468,34 @@
         .gallery-item:hover { transform: scale(1.03); }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.4s; }
         .gallery-item:hover img { transform: scale(1.08); }
-        .comments-track { overflow: hidden; position: relative; padding: 12px 0; }
-        .comments-inner { display: flex; gap: 32px; white-space: nowrap; animation: scrollComments 25s linear infinite; }
-        .comment-bubble {
-            flex-shrink: 0; font-size: 13px; font-weight: 500;
-            color: var(--text-secondary); padding: 8px 16px;
-            background: rgba(255,255,255,0.6); border-radius: var(--radius-full);
+        .comments-float-area {
+            position: relative; width: 100%; height: 160px; 
+            overflow: hidden; margin-top: 12px;
         }
-        @keyframes scrollComments { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+        .float-bubble {
+            position: absolute; 
+            padding: 8px 16px; border-radius: var(--radius-full);
+            background: rgba(255,255,255,0.75); backdrop-filter: blur(8px);
+            border: 1px solid rgba(255,255,255,0.5);
+            box-shadow: 0 4px 16px rgba(180,160,150,0.12);
+            font-size: 13px; font-weight: 500; color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0; pointer-events: none;
+            animation: floatBubbleUp 6s ease-in-out forwards;
+        }
+        .float-bubble:nth-child(odd) {
+            background: rgba(255,213,204,0.45);
+        }
+        .float-bubble:nth-child(3n) {
+            background: rgba(226,212,240,0.45);
+        }
+        @keyframes floatBubbleUp {
+            0%   { opacity: 0; transform: translateY(30px) scale(0.8); }
+            10%  { opacity: 1; transform: translateY(0) scale(1); }
+            85%  { opacity: 1; transform: translateY(-8px) scale(1); }
+            100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+        }
+         }
 
         /* ═══════════════════════════════════════════ */
         /* PANIC BUTTON (always visible)               */
@@ -813,20 +833,7 @@
                 <div class="gallery-item" data-src="mmexport1782544628116.jpg"><img src="mmexport1782544628116.jpg" alt="Expression Sheet" loading="lazy"></div>
                 <div class="gallery-item" data-src="mmexport1782544630485.jpg"><img src="mmexport1782544630485.jpg" alt="Tiger Expressions" loading="lazy"></div>
             </div>
-            <div class="comments-track">
-                <div class="comments-inner">
-                    <span class="comment-bubble">💬 No.1粉丝：这个角色的光影绝了！衣服褶皱画得比我的人生规划还要清晰！</span>
-                    <span class="comment-bubble">💬 首席评审：这个UI界面的呼吸感太强了，点进去感觉整个人都被治愈了！</span>
-                    <span class="comment-bubble">💬 终身会长：神仙画师，赶紧发Offer！</span>
-                    <span class="comment-bubble">💬 路人A：天呐这个角色设计也太牛了吧！！</span>
-                    <span class="comment-bubble">💬 某游戏公司老板：请问这位画师还缺公司吗？</span>
-                    <span class="comment-bubble">💬 No.1粉丝：这个角色的光影绝了！衣服褶皱画得比我的人生规划还要清晰！</span>
-                    <span class="comment-bubble">💬 首席评审：这个UI界面的呼吸感太强了，点进去感觉整个人都被治愈了！</span>
-                    <span class="comment-bubble">💬 终身会长：神仙画师，赶紧发Offer！</span>
-                    <span class="comment-bubble">💬 路人A：天呐这个角色设计也太牛了吧！！</span>
-                    <span class="comment-bubble">💬 某游戏公司老板：请问这位画师还缺公司吗？</span>
-                </div>
-            </div>
+            <div class="comments-float-area" id="commentsFloatArea"></div>
         </div>
     </div>
 
@@ -1228,6 +1235,42 @@
         }
         aiChatSend.addEventListener('click', handleSendMsg);
         aiChatInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') handleSendMsg(); });
+
+    
+        // ═══ FLOATING REVIEW BUBBLES ═══
+        (function initFloatingBubbles() {
+            const area = document.getElementById('commentsFloatArea');
+            if (!area) return;
+            const reviews = [
+                { avatar: '🧑‍🎨', name: 'No.1粉丝', text: '这个角色的光影绝了！衣服褶皱画得比我的人生规划还要清晰！' },
+                { avatar: '👨‍💼', name: '首席评审', text: '这个UI界面的呼吸感太强了，点进去感觉整个人都被治愈了！' },
+                { avatar: '👑', name: '终身会长', text: '神仙画师，赶紧发Offer！' },
+                { avatar: '😍', name: '路人A', text: '天呐这个角色设计也太牛了吧！！' },
+                { avatar: '🏢', name: '某游戏公司老板', text: '请问这位画师还缺公司吗？' },
+                { avatar: '🎮', name: '资深美术总监', text: '这配色方案我给满分，毫无保留的那种！' },
+                { avatar: '💎', name: '隔壁画师', text: '看完之后我默默关了自己的画板…太强了' },
+                { avatar: '🌟', name: '男朋友', text: '我家宝贝画的每一幅都是世界名画！' },
+            ];
+            let index = 0;
+            function spawnBubble() {
+                const r = reviews[index % reviews.length];
+                index++;
+                const bubble = document.createElement('div');
+                bubble.className = 'float-bubble';
+                bubble.textContent = r.avatar + ' ' + r.name + '：' + r.text;
+                const areaWidth = area.offsetWidth;
+                const left = Math.random() * Math.max(areaWidth - 260, 0);
+                const top = Math.random() * 100 + 10;
+                bubble.style.left = left + 'px';
+                bubble.style.top = top + 'px';
+                area.appendChild(bubble);
+                bubble.addEventListener('animationend', () => bubble.remove());
+            }
+            // Spawn first 2 immediately with slight offset
+            spawnBubble();
+            setTimeout(spawnBubble, 800);
+            setInterval(spawnBubble, 2800);
+        })();
 
     </script>
 </body>
