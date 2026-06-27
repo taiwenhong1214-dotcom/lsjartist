@@ -236,7 +236,7 @@
             border-radius: 16px 16px 4px 16px;
             font-size: 12px; font-weight: 500; color: var(--text-secondary);
             box-shadow: 0 4px 16px rgba(0,0,0,0.06);
-            white-space: nowrap; opacity: 0; pointer-events: none;
+            white-space: normal; max-width: 85%; border-radius: 16px; opacity: 0; pointer-events: none;
             transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
             transform: translateY(-50%) scale(0.8);
         }
@@ -490,10 +490,10 @@
             background: rgba(226,212,240,0.45);
         }
         @keyframes floatBubbleUp {
-            0%   { opacity: 0; transform: translateY(30px) scale(0.8); }
-            10%  { opacity: 1; transform: translateY(0) scale(1); }
-            85%  { opacity: 1; transform: translateY(-8px) scale(1); }
-            100% { opacity: 0; transform: translateY(-20px) scale(0.9); }
+            0%   { opacity: 0; transform: translateX(-50%) translateY(30px) scale(0.8); }
+            10%  { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+            85%  { opacity: 1; transform: translateX(-50%) translateY(-8px) scale(1); }
+            100% { opacity: 0; transform: translateX(-50%) translateY(-20px) scale(0.9); }
         }
          }
 
@@ -701,7 +701,7 @@
             BGM
         </button>
         <audio id="bgmAudio" loop preload="none">
-            <source src="https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3" type="audio/mpeg">
+            <source src="bgm.mp3" type="audio/mpeg">
         </audio>
     </header>
 
@@ -1263,18 +1263,20 @@
                 const bubble = document.createElement('div');
                 bubble.className = 'float-bubble';
                 bubble.textContent = r.avatar + ' ' + r.name + '：' + r.text;
-                const areaWidth = area.offsetWidth;
-                const left = Math.random() * Math.max(areaWidth - 260, 0);
-                const top = Math.random() * 100 + 10;
-                bubble.style.left = left + 'px';
+                // 避免重叠：设置固定轨道(lanes)和居中的left百分比
+                const lanes = [5, 55, 105];
+                const leftPercent = 25 + Math.random() * 50; 
+                const top = lanes[index % lanes.length] + Math.random() * 10;
+                
+                bubble.style.left = leftPercent + '%';
                 bubble.style.top = top + 'px';
                 area.appendChild(bubble);
                 bubble.addEventListener('animationend', () => bubble.remove());
             }
-            // Spawn first 2 immediately with slight offset
+            // Spawn
             spawnBubble();
-            setTimeout(spawnBubble, 800);
-            setInterval(spawnBubble, 2800);
+            setTimeout(spawnBubble, 1200);
+            setInterval(spawnBubble, 3000);
         })();
 
     </script>
