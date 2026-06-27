@@ -20,7 +20,7 @@ export default async function handler(req) {
       },
       body: JSON.stringify({
         // 你可以在这里更改你想要使用的模型，比如 'openai/gpt-4o' 或 'meta-llama/llama-3-8b-instruct:free'
-        model: 'openai/gpt-3.5-turbo', 
+        model: 'openai/gpt-oss-120b:free', 
         messages: [
           {
             role: 'system',
