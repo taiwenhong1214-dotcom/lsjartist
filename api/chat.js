@@ -26,7 +26,7 @@ export default async function handler(req) {
 
     // 使用 process.env.GOOGLE_API_KEY，并加上 ?alt=sse 参数以开启流式输出
     const apiKey = process.env.GOOGLE_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:streamGenerateContent?alt=sse&key=${apiKey}`;
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-latest:streamGenerateContent?alt=sse&key=${apiKey}`;
 
     const response = await fetch(url, {
       method: 'POST',
