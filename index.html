@@ -1,0 +1,1557 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>专属情绪补给站 💖</title>
+    <meta name="description" content="为最棒的UI/角色原画师打造的专属治愈空间">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&family=Outfit:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* ═══════════════════════════════════════════ */
+        /* DESIGN SYSTEM                               */
+        /* ═══════════════════════════════════════════ */
+        :root {
+            --cream: #FAF8F5;
+            --peach: #FFB5A7;
+            --peach-light: #FFD6CC;
+            --peach-deep: #E8967E;
+            --sage: #D8E2DC;
+            --sage-deep: #B8C9C0;
+            --lavender: #E2D4F0;
+            --lavender-deep: #C4A8E0;
+            --sky: #CADFF0;
+            --gold: #F0D9A0;
+            --text-primary: #3D3B3B;
+            --text-secondary: #7A7575;
+            --text-muted: #ADA6A6;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.65);
+            --glass-shadow: 0 8px 32px rgba(180, 160, 150, 0.12);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+            --radius-xl: 36px;
+            --radius-full: 9999px;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: 'Outfit', 'Noto Sans SC', -apple-system, sans-serif;
+            background: var(--cream);
+            color: var(--text-primary);
+            min-height: 100vh;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* ANIMATED BACKGROUND                         */
+        /* ═══════════════════════════════════════════ */
+        .bg-orbs {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
+            pointer-events: none;
+        }
+        .bg-orbs .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.35;
+            animation: orbFloat 20s ease-in-out infinite;
+        }
+        .bg-orbs .orb:nth-child(1) {
+            width: 400px; height: 400px;
+            background: var(--peach-light);
+            top: -10%; left: -10%;
+            animation-duration: 22s;
+        }
+        .bg-orbs .orb:nth-child(2) {
+            width: 350px; height: 350px;
+            background: var(--lavender);
+            top: 30%; right: -15%;
+            animation-duration: 18s;
+            animation-delay: -5s;
+        }
+        .bg-orbs .orb:nth-child(3) {
+            width: 300px; height: 300px;
+            background: var(--sage);
+            bottom: 10%; left: 20%;
+            animation-duration: 25s;
+            animation-delay: -10s;
+        }
+        .bg-orbs .orb:nth-child(4) {
+            width: 200px; height: 200px;
+            background: var(--sky);
+            top: 60%; left: 60%;
+            animation-duration: 15s;
+            animation-delay: -3s;
+        }
+
+        @keyframes orbFloat {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            25% { transform: translate(40px, -30px) scale(1.1); }
+            50% { transform: translate(-20px, 50px) scale(0.95); }
+            75% { transform: translate(30px, 20px) scale(1.05); }
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* GLASSMORPHISM UTILITIES                     */
+        /* ═══════════════════════════════════════════ */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid var(--glass-border);
+            box-shadow: var(--glass-shadow);
+        }
+
+        .glass-strong {
+            background: rgba(255, 255, 255, 0.72);
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 12px 40px rgba(180, 160, 150, 0.15);
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* HEADER                                      */
+        /* ═══════════════════════════════════════════ */
+        .header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+        .header.scrolled {
+            padding: 10px 20px;
+        }
+        .header .logo {
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--peach-deep);
+            letter-spacing: 0.5px;
+        }
+        .header .logo span { font-weight: 300; opacity: 0.7; }
+
+        .bgm-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            border-radius: var(--radius-full);
+            border: none;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            background: rgba(255,255,255,0.6);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+        }
+        .bgm-btn:hover { transform: scale(1.05); }
+        .bgm-btn.playing {
+            background: var(--peach);
+            color: #fff;
+        }
+        .bgm-btn .eq-bars {
+            display: flex;
+            gap: 2px;
+            align-items: flex-end;
+            height: 14px;
+        }
+        .bgm-btn .eq-bars span {
+            display: block;
+            width: 3px;
+            background: currentColor;
+            border-radius: 2px;
+            transition: height 0.2s;
+        }
+        .bgm-btn:not(.playing) .eq-bars span { height: 4px !important; }
+        .bgm-btn.playing .eq-bars span { animation: eqBounce 0.6s ease-in-out infinite alternate; }
+        .bgm-btn.playing .eq-bars span:nth-child(1) { animation-delay: 0s; }
+        .bgm-btn.playing .eq-bars span:nth-child(2) { animation-delay: 0.15s; }
+        .bgm-btn.playing .eq-bars span:nth-child(3) { animation-delay: 0.3s; }
+        .bgm-btn.playing .eq-bars span:nth-child(4) { animation-delay: 0.1s; }
+
+        @keyframes eqBounce {
+            0% { height: 4px; }
+            100% { height: 14px; }
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* MAIN LAYOUT                                 */
+        /* ═══════════════════════════════════════════ */
+        .main {
+            position: relative;
+            z-index: 1;
+            max-width: 480px;
+            margin: 0 auto;
+            padding: 88px 16px 140px;
+        }
+
+        .section-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 12px;
+            padding-left: 4px;
+        }
+
+        .card {
+            border-radius: var(--radius-lg);
+            padding: 24px;
+            margin-bottom: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 48px rgba(180, 160, 150, 0.18);
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* HERO GREETING                               */
+        /* ═══════════════════════════════════════════ */
+        .hero {
+            text-align: center;
+            padding: 40px 20px 32px;
+            margin-bottom: 24px;
+        }
+        .hero .greeting {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            animation: fadeInUp 0.8s ease;
+        }
+        .hero .sub {
+            font-size: 15px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            animation: fadeInUp 0.8s ease 0.15s both;
+        }
+        .hero .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 16px;
+            padding: 6px 14px;
+            border-radius: var(--radius-full);
+            background: rgba(255,181,167,0.15);
+            color: var(--peach-deep);
+            font-size: 12px;
+            font-weight: 600;
+            animation: fadeInUp 0.8s ease 0.3s both;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* MASCOT PET                                   */
+        /* ═══════════════════════════════════════════ */
+        .pet-container {
+            position: fixed;
+            right: 16px;
+            top: 100px;
+            z-index: 90;
+            cursor: pointer;
+        }
+        .pet-bubble {
+            position: absolute;
+            right: 72px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #fff;
+            padding: 8px 14px;
+            border-radius: 16px 16px 4px 16px;
+            font-size: 12px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.06);
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transform: translateY(-50%) scale(0.8);
+        }
+        .pet-bubble.show {
+            opacity: 1;
+            transform: translateY(-50%) scale(1);
+        }
+        .pet-img {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid #fff;
+            box-shadow: 0 4px 20px rgba(255,181,167,0.3);
+            animation: petFloat 3s ease-in-out infinite;
+            transition: transform 0.2s;
+        }
+        .pet-container:hover .pet-img { transform: scale(1.15); }
+        .pet-container:active .pet-img { transform: scale(0.9); }
+
+        @keyframes petFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-8px); }
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* FORTUNE CARD                                */
+        /* ═══════════════════════════════════════════ */
+        .fortune-wrapper {
+            perspective: 1200px;
+            cursor: pointer;
+            margin-bottom: 20px;
+        }
+        .fortune-card {
+            width: 100%;
+            height: 220px;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 0.7s cubic-bezier(0.4, 0.2, 0.2, 1);
+        }
+        .fortune-card.flipped { transform: rotateY(180deg); }
+
+        .fortune-front, .fortune-back {
+            position: absolute;
+            inset: 0;
+            backface-visibility: hidden;
+            border-radius: var(--radius-lg);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .fortune-front {
+            border: 2px dashed var(--peach-light);
+            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,214,204,0.2));
+            backdrop-filter: blur(10px);
+        }
+        .fortune-front .icon { font-size: 40px; margin-bottom: 12px; }
+        .fortune-front .hint {
+            color: var(--peach-deep);
+            font-size: 15px;
+            font-weight: 600;
+            text-align: center;
+        }
+        .fortune-front .tap-hint {
+            margin-top: 12px;
+            font-size: 11px;
+            color: var(--text-muted);
+            animation: pulse 2s ease-in-out infinite;
+        }
+
+        .fortune-back {
+            transform: rotateY(180deg);
+            background: linear-gradient(135deg, var(--peach), var(--lavender-deep));
+            color: #fff;
+            text-align: center;
+            overflow: hidden;
+        }
+        .fortune-back::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('mmexport1782544641112.jpg') center/cover;
+            opacity: 0.12;
+        }
+        .fortune-back .fortune-title {
+            position: relative; z-index: 1;
+            font-size: 22px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+        .fortune-back .fortune-text {
+            position: relative; z-index: 1;
+            font-size: 14px;
+            font-weight: 500;
+            line-height: 1.7;
+            opacity: 0.95;
+        }
+        .fortune-back .retry-hint {
+            position: relative; z-index: 1;
+            margin-top: 16px;
+            font-size: 11px;
+            opacity: 0.6;
+        }
+
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+        /* ═══════════════════════════════════════════ */
+        /* BREATHING BUBBLE                            */
+        /* ═══════════════════════════════════════════ */
+        .breathing-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .breathing-label {
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+        .breath-orb-wrap {
+            width: 140px;
+            height: 140px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .breath-orb {
+            position: absolute;
+            inset: 0;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--sage), var(--peach-light));
+            animation: breathCycle 11s ease-in-out infinite;
+            opacity: 0.5;
+        }
+        .breath-orb-inner {
+            width: 60%;
+            height: 60%;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.8);
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .breath-text {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            transition: opacity 0.8s;
+        }
+
+        @keyframes breathCycle {
+            0%   { transform: scale(0.6); opacity: 0.7; }
+            36%  { transform: scale(1);   opacity: 0.4; } /* inhale 4s */
+            100% { transform: scale(0.6); opacity: 0.7; } /* exhale 7s */
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* OFFER PRINTER                               */
+        /* ═══════════════════════════════════════════ */
+        .offer-btn {
+            width: 100%;
+            padding: 16px;
+            border: none;
+            border-radius: var(--radius-md);
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--text-primary);
+            cursor: pointer;
+            background: linear-gradient(135deg, var(--sage), var(--sage-deep));
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        .offer-btn:hover { transform: scale(1.02); box-shadow: 0 8px 24px rgba(184,201,192,0.4); }
+        .offer-btn:active { transform: scale(0.97); }
+        .offer-btn.done { opacity: 0.5; cursor: default; }
+
+        .offer-result {
+            margin-top: 16px;
+            overflow: hidden;
+            max-height: 0;
+            opacity: 0;
+            transition: max-height 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s 0.1s;
+        }
+        .offer-result.show {
+            max-height: 400px;
+            opacity: 1;
+        }
+        .offer-card {
+            background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,217,160,0.2));
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(240,217,160,0.4);
+            border-radius: var(--radius-md);
+            padding: 24px;
+            position: relative;
+        }
+        .offer-card .stamp {
+            position: absolute;
+            top: -8px; right: -8px;
+            background: var(--peach);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: var(--radius-full);
+            transform: rotate(12deg);
+            box-shadow: 0 4px 12px rgba(255,181,167,0.3);
+        }
+        .offer-card h3 {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--text-primary);
+        }
+        .offer-card p {
+            font-size: 13px;
+            line-height: 1.8;
+            color: var(--text-secondary);
+        }
+        .offer-card .highlight {
+            color: var(--peach-deep);
+            font-weight: 700;
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* ANXIETY SHREDDER                            */
+        /* ═══════════════════════════════════════════ */
+        .shredder-input-wrap {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+        }
+        .shredder-input {
+            flex: 1;
+            padding: 12px 16px;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: var(--radius-md);
+            background: rgba(255,255,255,0.5);
+            font-family: inherit;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            transition: all 0.3s;
+        }
+        .shredder-input:focus {
+            border-color: var(--peach-light);
+            box-shadow: 0 0 0 3px rgba(255,181,167,0.15);
+        }
+        .shredder-input::placeholder { color: var(--text-muted); }
+
+        .shred-btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--text-primary);
+            color: #fff;
+            font-family: inherit;
+            font-size: 13px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .shred-btn:hover { background: #2a2828; }
+        .shred-btn:active { transform: scale(0.95); }
+
+        .shred-area {
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        .shred-text {
+            display: inline-block;
+            font-weight: 500;
+            color: var(--text-secondary);
+        }
+        .shred-text.shredding {
+            animation: shredAnim 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+        @keyframes shredAnim {
+            0%   { transform: translateY(0) scale(1); opacity: 1; filter: blur(0); }
+            50%  { transform: translateY(10px) scale(1.05); opacity: 0.6; filter: blur(1px); }
+            100% { transform: translateY(40px) scale(0.3); opacity: 0; filter: blur(6px); }
+        }
+        .shred-success {
+            color: var(--sage-deep);
+            font-weight: 600;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* ARTWORK GALLERY                             */
+        /* ═══════════════════════════════════════════ */
+        .gallery-scroll {
+            display: flex;
+            gap: 12px;
+            overflow-x: auto;
+            padding: 4px 0 16px;
+            scroll-snap-type: x mandatory;
+            -webkit-overflow-scrolling: touch;
+        }
+        .gallery-scroll::-webkit-scrollbar { display: none; }
+        .gallery-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .gallery-item {
+            flex-shrink: 0;
+            width: 200px;
+            height: 260px;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            scroll-snap-align: center;
+            position: relative;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .gallery-item:hover { transform: scale(1.03); }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s;
+        }
+        .gallery-item:hover img { transform: scale(1.08); }
+
+        /* Fan comments */
+        .comments-track {
+            overflow: hidden;
+            position: relative;
+            padding: 12px 0;
+        }
+        .comments-inner {
+            display: flex;
+            gap: 32px;
+            white-space: nowrap;
+            animation: scrollComments 25s linear infinite;
+        }
+        .comment-bubble {
+            flex-shrink: 0;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            padding: 8px 16px;
+            background: rgba(255,255,255,0.6);
+            border-radius: var(--radius-full);
+        }
+
+        @keyframes scrollComments {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* MOOD DIARY (NEW)                            */
+        /* ═══════════════════════════════════════════ */
+        .mood-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+        .mood-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            padding: 12px 4px;
+            border-radius: var(--radius-sm);
+            border: 2px solid transparent;
+            background: rgba(255,255,255,0.4);
+            cursor: pointer;
+            transition: all 0.3s;
+            font-size: 24px;
+        }
+        .mood-option span {
+            font-size: 10px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .mood-option:hover { background: rgba(255,255,255,0.7); transform: scale(1.08); }
+        .mood-option.selected {
+            border-color: var(--peach);
+            background: rgba(255,181,167,0.12);
+            transform: scale(1.1);
+        }
+        .mood-response {
+            text-align: center;
+            padding: 12px;
+            font-size: 13px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: fadeInUp 0.4s ease;
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* COUNTDOWN (NEW)                             */
+        /* ═══════════════════════════════════════════ */
+        .countdown-card {
+            text-align: center;
+            background: linear-gradient(135deg, rgba(226,212,240,0.3), rgba(202,223,240,0.3));
+        }
+        .countdown-card .countdown-title {
+            font-size: 13px;
+            color: var(--text-muted);
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: 1px;
+        }
+        .countdown-number {
+            font-size: 56px;
+            font-weight: 900;
+            background: linear-gradient(135deg, var(--peach), var(--lavender-deep));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            line-height: 1;
+        }
+        .countdown-unit {
+            font-size: 14px;
+            color: var(--text-secondary);
+            font-weight: 500;
+            margin-top: 8px;
+        }
+        .countdown-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* LOVE LETTER (NEW)                           */
+        /* ═══════════════════════════════════════════ */
+        .letter-card {
+            background: linear-gradient(135deg, rgba(255,214,204,0.15), rgba(255,255,255,0.6));
+            border: 1px solid rgba(255,181,167,0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        .letter-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px; left: 10px;
+            font-size: 80px;
+            font-weight: 900;
+            color: var(--peach-light);
+            opacity: 0.3;
+            line-height: 1;
+        }
+        .letter-content {
+            position: relative;
+            z-index: 1;
+            font-size: 15px;
+            line-height: 2;
+            color: var(--text-secondary);
+            font-weight: 400;
+        }
+        .letter-signature {
+            margin-top: 16px;
+            text-align: right;
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--peach-deep);
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* DOODLE CANVAS (NEW)                         */
+        /* ═══════════════════════════════════════════ */
+        .canvas-wrap {
+            position: relative;
+            border-radius: var(--radius-md);
+            overflow: hidden;
+            touch-action: none;
+        }
+        #doodleCanvas {
+            width: 100%;
+            height: 200px;
+            background: rgba(255,255,255,0.6);
+            border-radius: var(--radius-md);
+            cursor: crosshair;
+            display: block;
+        }
+        .canvas-tools {
+            display: flex;
+            gap: 6px;
+            margin-top: 10px;
+            flex-wrap: wrap;
+        }
+        .canvas-tools button {
+            padding: 6px 14px;
+            border: 1px solid rgba(0,0,0,0.06);
+            border-radius: var(--radius-full);
+            background: rgba(255,255,255,0.6);
+            font-family: inherit;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .canvas-tools button:hover { background: var(--peach-light); color: #fff; }
+        .canvas-tools button.active { background: var(--peach); color: #fff; border-color: var(--peach); }
+        .color-dot {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border: 2px solid #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .color-dot:hover { transform: scale(1.2); }
+        .color-dot.active { border-color: var(--text-primary); transform: scale(1.15); }
+
+        /* ═══════════════════════════════════════════ */
+        /* PANIC BUTTON                                */
+        /* ═══════════════════════════════════════════ */
+        .panic-wrap {
+            position: fixed;
+            bottom: 24px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 90;
+            width: calc(100% - 32px);
+            max-width: 448px;
+        }
+        .panic-btn {
+            width: 100%;
+            padding: 18px;
+            border: none;
+            border-radius: var(--radius-xl);
+            background: linear-gradient(135deg, var(--peach), var(--peach-deep));
+            color: #fff;
+            font-family: inherit;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            box-shadow: 0 8px 32px rgba(255,181,167,0.4);
+            transition: all 0.3s;
+            animation: panicPulse 2.5s ease-in-out infinite;
+        }
+        .panic-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 40px rgba(255,181,167,0.5);
+        }
+        .panic-btn:active { transform: scale(0.97); }
+
+        @keyframes panicPulse {
+            0%, 100% { box-shadow: 0 8px 32px rgba(255,181,167,0.4); }
+            50% { box-shadow: 0 8px 48px rgba(255,181,167,0.6); }
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* MODAL                                       */
+        /* ═══════════════════════════════════════════ */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.3);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            z-index: 200;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            pointer-events: all;
+        }
+        .modal-box {
+            background: #fff;
+            border-radius: var(--radius-xl);
+            padding: 40px 28px;
+            max-width: 380px;
+            width: 100%;
+            text-align: center;
+            transform: scale(0.9) translateY(20px);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 24px 64px rgba(0,0,0,0.12);
+        }
+        .modal-overlay.show .modal-box {
+            transform: scale(1) translateY(0);
+        }
+        .modal-box .modal-icon { font-size: 56px; margin-bottom: 20px; }
+        .modal-box h3 {
+            font-size: 20px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 16px;
+        }
+        .modal-box p {
+            font-size: 14px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+            margin-bottom: 28px;
+        }
+        .modal-close-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: var(--text-primary);
+            color: #fff;
+            font-family: inherit;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .modal-close-btn:hover { background: #2a2828; }
+        
+        .modal-call-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--peach), var(--peach-deep));
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(255,181,167,0.3);
+        }
+        .modal-call-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255,181,167,0.4);
+        }
+        
+        .modal-notify-btn {
+            width: 100%;
+            padding: 14px;
+            border: none;
+            border-radius: var(--radius-md);
+            background: linear-gradient(135deg, var(--sky), var(--sage-deep));
+            color: #fff;
+            font-family: inherit;
+            font-size: 15px;
+            font-weight: 700;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s;
+            box-shadow: 0 4px 12px rgba(202,223,240,0.3);
+        }
+        .modal-notify-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(202,223,240,0.5);
+        }
+        .modal-notify-btn:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* ═══════════════════════════════════════════ */
+        /* LIGHTBOX (for gallery)                       */
+        /* ═══════════════════════════════════════════ */
+        .lightbox {
+            position: fixed;
+            inset: 0;
+            z-index: 300;
+            background: rgba(0,0,0,0.85);
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+            cursor: pointer;
+        }
+        .lightbox.show { opacity: 1; pointer-events: all; }
+        .lightbox img {
+            max-width: 100%;
+            max-height: 90vh;
+            object-fit: contain;
+            border-radius: var(--radius-md);
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            transform: scale(0.9);
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .lightbox.show img { transform: scale(1); }
+
+        /* ═══════════════════════════════════════════ */
+        /* RESPONSIVE                                  */
+        /* ═══════════════════════════════════════════ */
+        @media (max-width: 400px) {
+            .hero .greeting { font-size: 24px; }
+            .countdown-number { font-size: 44px; }
+            .gallery-item { width: 160px; height: 220px; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Animated Background Orbs -->
+    <div class="bg-orbs">
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+        <div class="orb"></div>
+    </div>
+
+    <!-- ═══ HEADER ═══ -->
+    <header class="header glass" id="header">
+        <div class="logo">✨ 补给站 <span>for her</span></div>
+        <button class="bgm-btn" id="bgmBtn">
+            <div class="eq-bars">
+                <span style="height:6px"></span>
+                <span style="height:10px"></span>
+                <span style="height:4px"></span>
+                <span style="height:8px"></span>
+            </div>
+            BGM
+        </button>
+        <audio id="bgmAudio" loop preload="none">
+            <source src="https://assets.mixkit.co/music/preview/mixkit-dreaming-big-31.mp3" type="audio/mpeg">
+        </audio>
+    </header>
+
+    <!-- ═══ PET MASCOT ═══ -->
+    <div class="pet-container" id="petArea">
+        <div class="pet-bubble" id="petBubble">你已经很棒啦~</div>
+        <img src="mmexport1782544603785.jpg" alt="Mascot" class="pet-img" id="petImg">
+    </div>
+
+    <!-- ═══ MAIN CONTENT ═══ -->
+    <main class="main">
+
+        <!-- Hero Greeting -->
+        <div class="hero">
+            <h1 class="greeting" id="greetingText">下午好，宝贝画师 🎨</h1>
+            <p class="sub">今天也辛苦了，这里是你的专属充电站<br>所有功能都是为你定制的 💕</p>
+            <div class="date-badge" id="dateBadge">📅 今天的日期</div>
+        </div>
+
+        <!-- ═══ MOOD CHECK-IN (NEW) ═══ -->
+        <div class="section-label">📊 今日心情打卡</div>
+        <div class="card glass" id="moodCard">
+            <div class="mood-grid" id="moodGrid">
+                <div class="mood-option" data-mood="amazing" data-response="太好了！今天的你在发光！✨">
+                    😆
+                    <span>超开心</span>
+                </div>
+                <div class="mood-option" data-mood="good" data-response="不错哦，今天继续保持好心情~ 🌸">
+                    😊
+                    <span>还不错</span>
+                </div>
+                <div class="mood-option" data-mood="meh" data-response="普普通通的一天也值得被珍惜 🍵">
+                    😐
+                    <span>一般般</span>
+                </div>
+                <div class="mood-option" data-mood="tired" data-response="累了就歇歇，你的健康最重要 💤">
+                    😮‍💨
+                    <span>好累</span>
+                </div>
+                <div class="mood-option" data-mood="sad" data-response="抱紧你！难过的时候有我在 🤗">
+                    😢
+                    <span>难过</span>
+                </div>
+            </div>
+            <div class="mood-response" id="moodResponse">选一个最贴近现在感受的表情吧~</div>
+        </div>
+
+        <!-- ═══ FORTUNE CARD ═══ -->
+        <div class="section-label">🔮 今日签运</div>
+        <div class="fortune-wrapper" id="fortuneWrapper">
+            <div class="fortune-card" id="fortuneCard">
+                <div class="fortune-front glass">
+                    <div class="icon">🎴</div>
+                    <div class="hint">点击抽取今日好运</div>
+                    <div class="tap-hint">— tap to reveal —</div>
+                </div>
+                <div class="fortune-back">
+                    <div class="fortune-title" id="fortuneTitle">今日运势：大吉 🌟</div>
+                    <div class="fortune-text" id="fortuneText">画的图全部一稿过，面试官全员起立鼓掌！</div>
+                    <div class="retry-hint">再次点击重新抽签</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ BREATHING BUBBLE ═══ -->
+        <div class="card glass breathing-card">
+            <div class="breathing-label">🫧 深呼吸治愈气泡</div>
+            <div class="breath-orb-wrap">
+                <div class="breath-orb"></div>
+                <div class="breath-orb-inner">
+                    <div class="breath-text" id="breathText">吸气...</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ COUNTDOWN (NEW) ═══ -->
+        <div class="card glass countdown-card">
+            <div class="countdown-title">🎯 距离拿到神仙OFFER还有</div>
+            <div class="countdown-number" id="countdownNum">0</div>
+            <div class="countdown-unit">天</div>
+            <div class="countdown-sub">（或者更快！谁知道呢 🤷‍♀️）</div>
+        </div>
+
+        <!-- ═══ OFFER PRINTER ═══ -->
+        <div class="section-label">🖨️ 神仙 OFFER 打印机</div>
+        <div class="card glass">
+            <button class="offer-btn" id="offerBtn">
+                🖨️ 点击生成你的专属 Offer
+            </button>
+            <div class="offer-result" id="offerResult">
+                <div class="offer-card">
+                    <div class="stamp">特急件!</div>
+                    <h3>📩 来自【宇宙最强游戏公司】的录用通知</h3>
+                    <p>
+                        恭喜您被聘为<span class="highlight">首席美术官（CAO）</span>！<br><br>
+                        💰 薪资：随便开，梦想多大开多大<br>
+                        🎨 工作内容：每天画自己喜欢的东西<br>
+                        📅 入职时间：看你心情<br>
+                        🏖️ 带薪假期：想休就休<br><br>
+                        <em style="font-size:12px;color:var(--text-muted);">附注：这不是玩笑，你值得最好的一切。</em>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ═══ ANXIETY SHREDDER ═══ -->
+        <div class="section-label">💥 焦虑粉碎机</div>
+        <div class="card glass">
+            <div class="shredder-input-wrap">
+                <input type="text" class="shredder-input" id="anxietyInput" placeholder="输入今天最烦心的一件事...">
+                <button class="shred-btn" id="shredBtn">粉碎</button>
+            </div>
+            <div class="shred-area" id="shredArea">
+                写下来，然后消灭它 💪
+            </div>
+        </div>
+
+        <!-- ═══ DOODLE CANVAS (NEW) ═══ -->
+        <div class="section-label">🖌️ 随手涂鸦板</div>
+        <div class="card glass">
+            <div class="canvas-wrap">
+                <canvas id="doodleCanvas"></canvas>
+            </div>
+            <div class="canvas-tools">
+                <button id="clearCanvas">🗑️ 清空</button>
+                <div class="color-dot active" data-color="#FFB5A7" style="background:#FFB5A7"></div>
+                <div class="color-dot" data-color="#D8E2DC" style="background:#D8E2DC"></div>
+                <div class="color-dot" data-color="#C4A8E0" style="background:#C4A8E0"></div>
+                <div class="color-dot" data-color="#3D3B3B" style="background:#3D3B3B"></div>
+                <div class="color-dot" data-color="#CADFF0" style="background:#CADFF0"></div>
+            </div>
+        </div>
+
+        <!-- ═══ LOVE LETTER (NEW) ═══ -->
+        <div class="section-label">💌 来自No.1粉丝的信</div>
+        <div class="card glass letter-card">
+            <div class="letter-content" id="letterContent">
+                亲爱的宝贝画师，<br><br>
+                你知道吗，每次看你画画的时候，我都觉得整个世界都安静了下来。你笔下的每一个角色都有灵魂，每一根线条都在呼吸。<br><br>
+                面试的路上可能会遇到不懂欣赏你的人，但请永远记住——你的才华不会因为一两次面试的结果而改变。那些拒绝你的公司，才是他们的损失。<br><br>
+                不管结果如何，你的No.1粉丝会永远为你鼓掌。💕
+            </div>
+            <div class="letter-signature">—— 你的首席男粉丝 ❤️</div>
+        </div>
+
+        <!-- ═══ ARTWORK GALLERY ═══ -->
+        <div class="section-label">🎨 作品夸夸角</div>
+        <div style="margin-bottom:20px;">
+            <div class="gallery-scroll" id="galleryScroll">
+                <div class="gallery-item" data-src="mmexport1782544526440.jpg"><img src="mmexport1782544526440.jpg" alt="Egyptian Warrior" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544568842.jpg"><img src="mmexport1782544568842.jpg" alt="Dark Fantasy" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544556542.jpg"><img src="mmexport1782544556542.jpg" alt="Purple Hanfu" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544564742.jpg"><img src="mmexport1782544564742.jpg" alt="Combat Girl" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544641112.jpg"><img src="mmexport1782544641112.jpg" alt="Underwater Dream" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544604932.jpg"><img src="mmexport1782544604932.jpg" alt="Jellyfish Chibi" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544605937.jpg"><img src="mmexport1782544605937.jpg" alt="Bunny Mech" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544606924.jpg"><img src="mmexport1782544606924.jpg" alt="Green Mech" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544607972.jpg"><img src="mmexport1782544607972.jpg" alt="Gold Girl" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544609000.jpg"><img src="mmexport1782544609000.jpg" alt="Night Chibi" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544610063.jpg"><img src="mmexport1782544610063.jpg" alt="Fire Sprite" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544611125.jpg"><img src="mmexport1782544611125.jpg" alt="Cat Ears" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544612109.jpg"><img src="mmexport1782544612109.jpg" alt="Jellyfish 2" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544613261.jpg"><img src="mmexport1782544613261.jpg" alt="Jellyfish 3" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544614360.jpg"><img src="mmexport1782544614360.jpg" alt="Lamb Girl" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544615493.jpg"><img src="mmexport1782544615493.jpg" alt="Gothic Demon" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544573896.jpg"><img src="mmexport1782544573896.jpg" alt="Solo Portrait" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544628116.jpg"><img src="mmexport1782544628116.jpg" alt="Expression Sheet" loading="lazy"></div>
+                <div class="gallery-item" data-src="mmexport1782544630485.jpg"><img src="mmexport1782544630485.jpg" alt="Tiger Expressions" loading="lazy"></div>
+            </div>
+
+            <!-- Comments -->
+            <div class="comments-track">
+                <div class="comments-inner">
+                    <span class="comment-bubble">💬 No.1粉丝：这个角色的光影绝了！衣服褶皱画得比我的人生规划还要清晰！</span>
+                    <span class="comment-bubble">💬 首席评审：这个UI界面的呼吸感太强了，点进去感觉整个人都被治愈了！</span>
+                    <span class="comment-bubble">💬 终身会长：神仙画师，赶紧发Offer！</span>
+                    <span class="comment-bubble">💬 路人A：天呐这个角色设计也太牛了吧！！</span>
+                    <span class="comment-bubble">💬 某游戏公司老板：请问这位画师还缺公司吗？</span>
+                    <!-- Duplicate for seamless loop -->
+                    <span class="comment-bubble">💬 No.1粉丝：这个角色的光影绝了！衣服褶皱画得比我的人生规划还要清晰！</span>
+                    <span class="comment-bubble">💬 首席评审：这个UI界面的呼吸感太强了，点进去感觉整个人都被治愈了！</span>
+                    <span class="comment-bubble">💬 终身会长：神仙画师，赶紧发Offer！</span>
+                    <span class="comment-bubble">💬 路人A：天呐这个角色设计也太牛了吧！！</span>
+                    <span class="comment-bubble">💬 某游戏公司老板：请问这位画师还缺公司吗？</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- ═══ PANIC BUTTON ═══ -->
+    <div class="panic-wrap">
+        <button class="panic-btn" id="panicBtn">🚨 我快不行了 / 进度条空了</button>
+    </div>
+
+    <!-- ═══ MODAL ═══ -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-icon">🔋</div>
+            <h3>紧急电力传输中...</h3>
+            <p>
+                已收到求救信号！请立刻放下画笔。<br>
+                男友正在提着<strong style="color:var(--peach-deep)">奶茶 / 烧烤 / 摸摸头</strong>火速赶来的路上。<br><br>
+                <span style="font-size:12px;color:var(--text-muted)">坚持住！（抱紧）💕</span>
+            </p>
+            <div style="display: flex; gap: 12px; flex-direction: column;">
+                <!-- 这里的 13800000000 换成你的真实手机号 -->
+                <a href="tel:13800000000" class="modal-call-btn" style="text-decoration: none; display: block;">📞 一键电话呼叫男友</a>
+                <!-- 通知按钮 -->
+                <button class="modal-notify-btn" id="notifyBtn">📡 发送微信求救信号</button>
+                <button class="modal-close-btn" id="closeModal">乖乖等待投喂 🤗</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══ LIGHTBOX ═══ -->
+    <div class="lightbox" id="lightbox">
+        <img src="" alt="Preview" id="lightboxImg">
+    </div>
+
+    <!-- ═══════════════════════════════════════════ -->
+    <!-- JAVASCRIPT                                    -->
+    <!-- ═══════════════════════════════════════════ -->
+    <script>
+        // ═══ UTILITIES ═══
+        const $ = id => document.getElementById(id);
+
+        // ═══ GREETING (time-based) ═══
+        (function initGreeting() {
+            const h = new Date().getHours();
+            let greeting = '深夜了，记得早点休息 🌙';
+            if (h >= 6 && h < 9) greeting = '早安，宝贝画师 🌅';
+            else if (h >= 9 && h < 12) greeting = '上午好，宝贝画师 ☀️';
+            else if (h >= 12 && h < 14) greeting = '中午好，记得吃饭 🍱';
+            else if (h >= 14 && h < 18) greeting = '下午好，宝贝画师 🎨';
+            else if (h >= 18 && h < 22) greeting = '晚上好，辛苦啦 🌆';
+
+            $('greetingText').textContent = greeting;
+
+            const now = new Date();
+            const months = ['一月','二月','三月','四月','五月','六月','七月','八月','九月','十月','十一月','十二月'];
+            const days = ['周日','周一','周二','周三','周四','周五','周六'];
+            $('dateBadge').textContent = `📅 ${now.getFullYear()}年${months[now.getMonth()]} ${now.getDate()}日 ${days[now.getDay()]}`;
+        })();
+
+        // ═══ BGM PLAYER ═══
+        const bgmBtn = $('bgmBtn');
+        const bgmAudio = $('bgmAudio');
+        let bgmPlaying = false;
+
+        bgmBtn.addEventListener('click', () => {
+            if (bgmPlaying) {
+                bgmAudio.pause();
+                bgmBtn.classList.remove('playing');
+            } else {
+                bgmAudio.play().catch(() => {});
+                bgmBtn.classList.add('playing');
+            }
+            bgmPlaying = !bgmPlaying;
+        });
+
+        // ═══ HEADER SCROLL ═══
+        window.addEventListener('scroll', () => {
+            $('header').classList.toggle('scrolled', window.scrollY > 30);
+        });
+
+        // ═══ PET MASCOT ═══
+        const petMessages = [
+            "你已经很棒啦~", "摸摸头！", "休息一下嘛~",
+            "今天也是最可爱的！", "画得好好哦~", "我好喜欢你画的！",
+            "加油鸭！💪", "该喝水啦 💧", "你比你画的角色还好看！"
+        ];
+        let petTimeout;
+        $('petArea').addEventListener('click', () => {
+            clearTimeout(petTimeout);
+            const bubble = $('petBubble');
+            bubble.textContent = petMessages[Math.floor(Math.random() * petMessages.length)];
+            bubble.classList.add('show');
+            // Squish animation
+            $('petImg').style.transform = 'scale(0.85)';
+            setTimeout(() => $('petImg').style.transform = '', 200);
+            petTimeout = setTimeout(() => bubble.classList.remove('show'), 3000);
+        });
+
+        // ═══ MOOD CHECK-IN ═══
+        document.querySelectorAll('.mood-option').forEach(opt => {
+            opt.addEventListener('click', () => {
+                document.querySelectorAll('.mood-option').forEach(o => o.classList.remove('selected'));
+                opt.classList.add('selected');
+                $('moodResponse').innerHTML = opt.dataset.response;
+                $('moodResponse').style.animation = 'none';
+                void $('moodResponse').offsetWidth;
+                $('moodResponse').style.animation = 'fadeInUp 0.4s ease';
+            });
+        });
+
+        // ═══ FORTUNE CARD ═══
+        const fortunes = [
+            { title: "今日运势：大吉 🌟", text: "画的图全部一稿过，面试官全员起立鼓掌！" },
+            { title: "今日运势：暴富 💰", text: "离拿到神级 Offer 还差临门一脚，今天宜吃大餐！" },
+            { title: "今日运势：特权 🦄", text: "获得「今天不用做任何决定」体验卡一张。全天随便躺！" },
+            { title: "今日运势：被爱 ❤️", text: "你的首席男粉丝正在待命，随时准备投喂奶茶和拥抱。" },
+            { title: "今日运势：神笔 🖌️", text: "今天画什么都神似！下笔如有神助，灵感爆棚！" },
+            { title: "今日运势：锦鲤 🐟", text: "转发这条锦鲤运势，三天之内收到dream offer！" }
+        ];
+        let isFlipped = false;
+
+        $('fortuneWrapper').addEventListener('click', () => {
+            const card = $('fortuneCard');
+            if (!isFlipped) {
+                const f = fortunes[Math.floor(Math.random() * fortunes.length)];
+                $('fortuneTitle').textContent = f.title;
+                $('fortuneText').textContent = f.text;
+                card.classList.add('flipped');
+            } else {
+                card.classList.remove('flipped');
+            }
+            isFlipped = !isFlipped;
+        });
+
+        // ═══ BREATHING TEXT ═══
+        const breathTexts = ['吸气...', '屏住...', '呼气...'];
+        let breathIdx = 0;
+        setInterval(() => {
+            breathIdx = (breathIdx + 1) % 3;
+            const el = $('breathText');
+            el.style.opacity = '0';
+            setTimeout(() => {
+                el.textContent = breathTexts[breathIdx];
+                el.style.opacity = '1';
+            }, 500);
+        }, 3700);
+
+        // ═══ COUNTDOWN ═══
+        (function initCountdown() {
+            // Random "days until offer" between 3-15 for fun
+            const seed = new Date().toDateString();
+            let hash = 0;
+            for (let i = 0; i < seed.length; i++) { hash = seed.charCodeAt(i) + ((hash << 5) - hash); }
+            const days = Math.abs(hash % 12) + 3;
+            $('countdownNum').textContent = days;
+        })();
+
+        // ═══ OFFER PRINTER ═══
+        let offerPrinted = false;
+        $('offerBtn').addEventListener('click', () => {
+            if (offerPrinted) return;
+            offerPrinted = true;
+            $('offerResult').classList.add('show');
+            const btn = $('offerBtn');
+            btn.textContent = '✅ Offer 已成功送达！';
+            btn.classList.add('done');
+        });
+
+        // ═══ ANXIETY SHREDDER ═══
+        $('shredBtn').addEventListener('click', () => {
+            const val = $('anxietyInput').value.trim();
+            if (!val) return;
+            $('anxietyInput').value = '';
+
+            const area = $('shredArea');
+            area.innerHTML = `<div class="shred-text shredding">${val}</div>`;
+            setTimeout(() => {
+                area.innerHTML = '<div class="shred-success">✨ 已灰飞烟灭！压力 -100 ✨</div>';
+            }, 900);
+        });
+        $('anxietyInput').addEventListener('keydown', e => {
+            if (e.key === 'Enter') $('shredBtn').click();
+        });
+
+        // ═══ DOODLE CANVAS ═══
+        (function initCanvas() {
+            const canvas = $('doodleCanvas');
+            const rect = canvas.parentElement.getBoundingClientRect();
+            canvas.width = canvas.offsetWidth * 2;
+            canvas.height = 400;
+            canvas.style.height = '200px';
+            const ctx = canvas.getContext('2d');
+            ctx.scale(2, 2);
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.lineWidth = 3;
+            ctx.strokeStyle = '#FFB5A7';
+
+            let drawing = false;
+            let lastX = 0, lastY = 0;
+
+            function getPos(e) {
+                const r = canvas.getBoundingClientRect();
+                const touch = e.touches ? e.touches[0] : e;
+                return [touch.clientX - r.left, touch.clientY - r.top];
+            }
+
+            function startDraw(e) {
+                e.preventDefault();
+                drawing = true;
+                [lastX, lastY] = getPos(e);
+            }
+            function draw(e) {
+                if (!drawing) return;
+                e.preventDefault();
+                const [x, y] = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(lastX, lastY);
+                ctx.lineTo(x, y);
+                ctx.stroke();
+                [lastX, lastY] = [x, y];
+            }
+            function stopDraw() { drawing = false; }
+
+            canvas.addEventListener('mousedown', startDraw);
+            canvas.addEventListener('mousemove', draw);
+            canvas.addEventListener('mouseup', stopDraw);
+            canvas.addEventListener('mouseleave', stopDraw);
+            canvas.addEventListener('touchstart', startDraw, { passive: false });
+            canvas.addEventListener('touchmove', draw, { passive: false });
+            canvas.addEventListener('touchend', stopDraw);
+
+            // Color picker
+            document.querySelectorAll('.color-dot').forEach(dot => {
+                dot.addEventListener('click', () => {
+                    document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+                    dot.classList.add('active');
+                    ctx.strokeStyle = dot.dataset.color;
+                });
+            });
+
+            // Clear
+            $('clearCanvas').addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+
+            // Resize handler
+            window.addEventListener('resize', () => {
+                const imgData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+                canvas.width = canvas.offsetWidth * 2;
+                canvas.height = 400;
+                ctx.scale(2, 2);
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.lineWidth = 3;
+                ctx.putImageData(imgData, 0, 0);
+            });
+        })();
+
+        // ═══ GALLERY LIGHTBOX ═══
+        document.querySelectorAll('.gallery-item').forEach(item => {
+            item.addEventListener('click', () => {
+                const lb = $('lightbox');
+                $('lightboxImg').src = item.dataset.src;
+                lb.classList.add('show');
+            });
+        });
+        $('lightbox').addEventListener('click', () => {
+            $('lightbox').classList.remove('show');
+        });
+
+        // ═══ PANIC MODAL & NOTIFY ═══
+        $('panicBtn').addEventListener('click', () => {
+            $('modalOverlay').classList.add('show');
+            const btn = $('notifyBtn');
+            btn.disabled = false;
+            btn.textContent = '📡 发送微信求救信号';
+            btn.style.background = '';
+        });
+        $('closeModal').addEventListener('click', () => {
+            $('modalOverlay').classList.remove('show');
+        });
+        $('modalOverlay').addEventListener('click', (e) => {
+            if (e.target === $('modalOverlay')) $('modalOverlay').classList.remove('show');
+        });
+
+        $('notifyBtn').addEventListener('click', async () => {
+            const btn = $('notifyBtn');
+            // ⚠️ 这里替换成你在 pushplus 获取的 token
+            const PUSHPLUS_TOKEN = 'e1dbbc37c06a4f53a1d628cf1ec48e62'; 
+            
+            if (PUSHPLUS_TOKEN === '你的_PUSHPLUS_TOKEN') {
+                alert('开发者提示：请先在代码里配置你的 PushPlus Token 才能发送微信通知哦！');
+                return;
+            }
+
+            btn.disabled = true;
+            btn.textContent = '信号发射中...';
+
+            try {
+                const title = encodeURIComponent('🚨 宝贝画师发来紧急求救信号！');
+                const content = encodeURIComponent('她快没电啦，请火速带着奶茶/烧烤前往支援！💕');
+                const url = `https://www.pushplus.plus/send?token=${PUSHPLUS_TOKEN}&title=${title}&content=${content}&template=html`;
+                
+                await fetch(url, { mode: 'no-cors' }); // no-cors 避免前端跨域报错，虽然拿不到具体响应但不影响发送
+                
+                setTimeout(() => {
+                    btn.textContent = '✅ 信号已发送！男友正在狂奔而来';
+                    btn.style.background = 'var(--sage-deep)';
+                }, 800); // 加一点延迟增加仪式感
+            } catch (error) {
+                btn.textContent = '❌ 发送失败，请直接打电话！';
+                btn.disabled = false;
+            }
+        });
+
+        // ═══ ENTRANCE ANIMATIONS ═══
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.card, .fortune-wrapper, .section-label').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(24px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+
+    </script>
+</body>
+</html>
