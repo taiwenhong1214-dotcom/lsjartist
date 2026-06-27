@@ -10,41 +10,36 @@ export default async function handler(req) {
   try {
     const { messages } = await req.json();
 
-    // 1. 将前端的 OpenAI 格式消息转换为 Gemini 格式
-    const contents = messages.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }]
-    }));
-
-    // 2. 组装 Gemini 请求数据
-    const geminiPayload = {
-      systemInstruction: {
-        parts: [{ text: '你是宝贝画师的专属情绪抚慰AI，名字叫“贴贴”。你说话非常温柔、俏皮、鼓励人，像一个知心姐姐。如果她遇到画画瓶颈或面试焦虑，你要用非常治愈的语气安慰她。多用emoji，绝对不要使用机器人的语气。' }]
-      },
-      contents: contents,
-    };
-
-    // 使用 process.env.GOOGLE_API_KEY，并加上 ?alt=sse 参数以开启流式输出
-    const apiKey = process.env.GOOGLE_API_KEY;
-    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:streamGenerateContent?alt=sse&key=${apiKey}`;
-
-    const response = await fetch(url, {
+    const response = await fetch('https://openrouter.ai/api/v1/chat/completions', {
       method: 'POST',
       headers: {
+        'Authorization': `Bearer ${process.env.OPENROUTER_API_KEY}`,
         'Content-Type': 'application/json',
+        'HTTP-Referer': 'https://support-station.vercel.app/', // 替换为你的实际域名
+        'X-Title': 'Emotional Support Station',
       },
-      body: JSON.stringify(geminiPayload)
+      body: JSON.stringify({
+        model: 'deepseek/deepseek-v4-flash', 
+        messages: [
+          {
+            role: 'system',
+            content: '你是宝贝画师的专属情绪抚慰AI，名字叫“贴贴”。你说话非常温柔、俏皮、鼓励人，像一个知心姐姐。如果她遇到画画瓶颈或面试焦虑，你要用非常治愈的语气安慰她。多用emoji，绝对不要使用机器人的语气。'
+          },
+          ...messages
+        ],
+        stream: true,
+      }),
     });
 
     if (!response.ok) {
       const errorText = await response.text();
-      return new Response(JSON.stringify({ error: 'Google API Error', details: errorText }), {
+      return new Response(JSON.stringify({ error: 'OpenRouter API Error', details: errorText }), {
         status: response.status,
         headers: { 'Content-Type': 'application/json' }
       });
     }
 
-    // 3. 将 Gemini 的 SSE 流直接原样转发给客户端
+    // 将 OpenRouter 的 SSE 流直接原样转发给客户端
     return new Response(response.body, {
       headers: {
         'Content-Type': 'text/event-stream',
