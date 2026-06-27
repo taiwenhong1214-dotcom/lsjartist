@@ -19,8 +19,9 @@ export default async function handler(req) {
         'X-Title': 'Emotional Support Station',
       },
       body: JSON.stringify({
-        // 你可以在这里更改你想要使用的模型，比如 'openai/gpt-4o' 或 'meta-llama/llama-3-8b-instruct:free'
-        model: 'openai/gpt-oss-120b:free', 
+        // DeepSeek V3 中文能力极强，价格极低（约 $0.14/百万 token），性价比之王
+        // 其他推荐：'google/gemini-2.0-flash-001'（也很便宜且中文好）
+        model: 'deepseek/deepseek-chat-v3-0324', 
         messages: [
           {
             role: 'system',
