@@ -501,7 +501,7 @@
         /* PANIC BUTTON (always visible)               */
         /* ═══════════════════════════════════════════ */
         .panic-wrap {
-            position: fixed; bottom: 84px; left: 50%;
+            position: fixed; bottom: calc(72px + env(safe-area-inset-bottom) + 12px); left: 50%;
             transform: translateX(-50%); z-index: 90;
             width: calc(100% - 32px); max-width: 448px;
         }
@@ -586,7 +586,7 @@
         /* AI CHAT                                     */
         /* ═══════════════════════════════════════════ */
         .ai-fab {
-            position: fixed; bottom: 90px; right: 24px;
+            position: fixed; bottom: calc(72px + env(safe-area-inset-bottom) + 12px); right: 24px;
             width: 52px; height: 52px; border-radius: 50%;
             background: linear-gradient(135deg, var(--lavender-deep), var(--peach));
             color: #fff; display: flex; align-items: center; justify-content: center;
@@ -679,8 +679,9 @@
             .hero .greeting { font-size: 24px; }
             .countdown-number { font-size: 44px; }
             .gallery-item { width: 160px; height: 220px; }
-            .ai-chat-window { width: calc(100% - 32px); right: 16px; bottom: 155px; z-index: 101; }
-            .ai-fab { bottom: 150px; right: 16px; }
+            .ai-chat-window { width: calc(100% - 32px); right: 16px; bottom: calc(72px + env(safe-area-inset-bottom) + 72px); z-index: 101; }
+            .ai-fab { bottom: calc(72px + env(safe-area-inset-bottom) + 12px); right: 16px; }
+            .panic-wrap { width: calc(100% - 84px); left: 16px; transform: none; }
         }
     
         /* ENVELOPE OVERLAY */
