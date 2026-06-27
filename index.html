@@ -706,7 +706,7 @@
             border-left: 140px solid transparent;
             border-right: 140px solid transparent;
             border-top: 105px solid #ffaeb8;
-            transform-origin: top; transition: transform 0.7s ease; z-index: 4;
+            transform-origin: top; transition: transform 0.7s ease, z-index 0s; z-index: 4;
         }
         .env-front {
             position: absolute; bottom: 0; left: 0;
@@ -737,8 +737,8 @@
         .envelope-text { font-size: 17px; color: #ff8fa3; animation: envPulse 2.5s infinite; font-weight: 600; letter-spacing: 3px;}
         @keyframes envPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         
-        .envelope-container.open .env-flap { transform: rotateX(180deg); }
-        .envelope-container.open .env-letter { transform: scale(1.02); }
+        .envelope-container.open .env-flap { transform: rotateX(180deg); z-index: 1; transition: transform 0.7s ease, z-index 0s 0.25s; }
+        .envelope-container.open .env-letter { transform: translateY(-70px) scale(1.05); }
 
     </style>
 </head>
