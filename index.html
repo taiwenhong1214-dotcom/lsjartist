@@ -700,7 +700,7 @@
             </div>
             BGM
         </button>
-        <audio id="bgmAudio" loop preload="none">
+        <audio id="bgmAudio" loop autoplay preload="auto">
             <source src="bgm.mp3" type="audio/mpeg">
         </audio>
     </header>
@@ -978,6 +978,20 @@
             else { bgmAudio.play().catch(() => {}); bgmBtn.classList.add('playing'); }
             bgmPlaying = !bgmPlaying;
         });
+        
+        // 处理现代浏览器的自动播放限制：用户首次点击页面任何地方时触发播放
+        const startAutoplay = () => {
+            if (!bgmPlaying) {
+                bgmAudio.play().then(() => {
+                    bgmPlaying = true;
+                    bgmBtn.classList.add('playing');
+                }).catch(() => {});
+            }
+            document.removeEventListener('click', startAutoplay);
+            document.removeEventListener('touchstart', startAutoplay);
+        };
+        document.addEventListener('click', startAutoplay);
+        document.addEventListener('touchstart', startAutoplay);
 
         // ═══ PET ═══
         const petMessages = [
