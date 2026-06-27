@@ -21,7 +21,7 @@ export default async function handler(req) {
       body: JSON.stringify({
         // DeepSeek V3 中文能力极强，价格极低（约 $0.14/百万 token），性价比之王
         // 其他推荐：'google/gemini-2.0-flash-001'（也很便宜且中文好）
-        model: 'deepseek/deepseek-chat-v3-0324', 
+        model: 'openai/gpt-oss-120b:free', 
         messages: [
           {
             role: 'system',
