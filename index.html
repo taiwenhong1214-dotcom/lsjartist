@@ -682,9 +682,69 @@
             .ai-chat-window { width: calc(100% - 32px); right: 16px; bottom: 155px; z-index: 101; }
             .ai-fab { bottom: 150px; right: 16px; }
         }
+    
+        /* ENVELOPE OVERLAY */
+        .envelope-overlay {
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, #fff5f3, #ffe4df);
+            z-index: 9999; display: flex; align-items: center; justify-content: center;
+            transition: opacity 1s ease 0.6s, visibility 1s ease 0.6s;
+        }
+        .envelope-overlay.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .envelope-container { cursor: pointer; text-align: center; perspective: 800px; -webkit-tap-highlight-color: transparent; }
+        .envelope {
+            position: relative; width: 260px; height: 160px;
+            background: #ffcfc4; border-radius: 6px;
+            margin: 0 auto 30px; box-shadow: 0 20px 40px rgba(255,165,150,0.3);
+            transition: transform 0.4s ease;
+        }
+        .envelope-container:hover .envelope { transform: translateY(-5px); }
+        .env-flap {
+            position: absolute; top: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 130px solid transparent;
+            border-right: 130px solid transparent;
+            border-top: 95px solid #ffb3a3;
+            transform-origin: top; transition: transform 0.6s ease; z-index: 4;
+        }
+        .env-front {
+            position: absolute; bottom: 0; left: 0;
+            width: 0; height: 0;
+            border-left: 130px solid #ffc2b4;
+            border-right: 130px solid #ffc2b4;
+            border-bottom: 80px solid #ffae9c;
+            z-index: 3; border-radius: 0 0 6px 6px;
+        }
+        .env-letter {
+            position: absolute; top: 10px; left: 10px; right: 10px; bottom: 10px;
+            background: #fff; border-radius: 4px; z-index: 2;
+            display: flex; align-items: center; justify-content: center;
+            color: var(--peach-deep); font-weight: bold; font-size: 18px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.6s 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .envelope-text { font-size: 16px; color: var(--peach-deep); animation: envPulse 2s infinite; font-weight: 500; letter-spacing: 2px;}
+        @keyframes envPulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+        
+        .envelope-container.open .env-flap { transform: rotateX(180deg); }
+        .envelope-container.open .env-letter { transform: translateY(-80px) scale(1.05); }
+
     </style>
 </head>
 <body>
+
+    <!-- Envelope Splash Screen -->
+    <div class="envelope-overlay" id="envelopeOverlay">
+        <div class="envelope-container" id="envelopeBtn">
+            <div class="envelope">
+                <div class="env-letter">💌 给宝贝的一封信</div>
+                <div class="env-front"></div>
+                <div class="env-flap"></div>
+            </div>
+            <p class="envelope-text">点击拆开信封</p>
+        </div>
+    </div>
+
     <!-- Animated Background Orbs -->
     <div class="bg-orbs">
         <div class="orb"></div><div class="orb"></div><div class="orb"></div><div class="orb"></div>
@@ -979,19 +1039,25 @@
             bgmPlaying = !bgmPlaying;
         });
         
-        // 处理现代浏览器的自动播放限制：用户首次点击页面任何地方时触发播放
-        const startAutoplay = () => {
+        
+        const envOverlay = document.getElementById('envelopeOverlay');
+        const envBtn = document.getElementById('envelopeBtn');
+        
+        envBtn.addEventListener('click', () => {
+            envBtn.classList.add('open');
+            // Play music immediately on click
             if (!bgmPlaying) {
                 bgmAudio.play().then(() => {
                     bgmPlaying = true;
                     bgmBtn.classList.add('playing');
                 }).catch(() => {});
             }
-            document.removeEventListener('click', startAutoplay);
-            document.removeEventListener('touchstart', startAutoplay);
-        };
-        document.addEventListener('click', startAutoplay);
-        document.addEventListener('touchstart', startAutoplay);
+            // Hide overlay after animation
+            setTimeout(() => {
+                envOverlay.classList.add('hidden');
+            }, 600); // 600ms for envelope opening, then overlay fade out
+        });
+
 
         // ═══ PET ═══
         const petMessages = [
