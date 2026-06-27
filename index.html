@@ -738,7 +738,7 @@
         @keyframes envPulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
         
         .envelope-container.open .env-flap { transform: rotateX(180deg); }
-        .envelope-container.open .env-letter { transform: translateY(-50px) scale(1.05); }
+        .envelope-container.open .env-letter { transform: scale(1.02); }
 
     </style>
 </head>
@@ -1339,14 +1339,14 @@
             const area = document.getElementById('commentsFloatArea');
             if (!area) return;
             const reviews = [
-                { avatar: '🧑‍🎨', name: 'No.1粉丝', text: '这个角色的光影绝了！衣服褶皱画得比我的人生规划还要清晰！' },
-                { avatar: '👨‍💼', name: '首席评审', text: '这个UI界面的呼吸感太强了，点进去感觉整个人都被治愈了！' },
-                { avatar: '👑', name: '终身会长', text: '神仙画师，赶紧发Offer！' },
-                { avatar: '😍', name: '路人A', text: '天呐这个角色设计也太牛了吧！！' },
-                { avatar: '🏢', name: '某游戏公司老板', text: '请问这位画师还缺公司吗？' },
-                { avatar: '🎮', name: '资深美术总监', text: '这配色方案我给满分，毫无保留的那种！' },
-                { avatar: '💎', name: '隔壁画师', text: '看完之后我默默关了自己的画板…太强了' },
-                { avatar: '🌟', name: '男朋友', text: '我家宝贝画的每一幅都是世界名画！' },
+                { avatar: '🧑‍🎨', text: '绝绝子！光影太神了！' },
+                { avatar: '👨‍💼', text: '这张可以直接做海报了！' },
+                { avatar: '👑', text: '神仙画师，请收下我的膝盖！' },
+                { avatar: '😍', text: '绝美！每一笔都在我的心巴上~' },
+                { avatar: '🏢', text: '简历发我，明天来上班！' },
+                { avatar: '🎮', text: '满分配色，毫无保留的满分！' },
+                { avatar: '💎', text: '默默关掉了自己的画板...' },
+                { avatar: '🌟', text: '我家宝贝就是当代达芬奇！' },
             ];
             let index = 0;
             function spawnBubble() {
@@ -1354,10 +1354,9 @@
                 index++;
                 const bubble = document.createElement('div');
                 bubble.className = 'float-bubble';
-                bubble.textContent = r.avatar + ' ' + r.name + '：' + r.text;
-                // 避免重叠：设置固定轨道(lanes)和居中的left百分比
+                bubble.textContent = r.avatar + ' ' + r.text;
                 const lanes = [5, 55, 105];
-                const leftPercent = 25 + Math.random() * 50; 
+                const leftPercent = 30 + Math.random() * 40; 
                 const top = lanes[index % lanes.length] + Math.random() * 10;
                 
                 bubble.style.left = leftPercent + '%';
